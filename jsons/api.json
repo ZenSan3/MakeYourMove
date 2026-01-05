@@ -1,0 +1,55 @@
+[
+    {
+        "stations":[
+            {
+                "name":"Piazza Dante",
+                "address":"Piazza Dante",
+                "city":"Trento",
+                "cap":38122
+            },
+            {
+                "name":"Povo Polo Scientifico Ovest",
+                "address":"Via Sommarive",
+                "city": "Povo",
+                "cap":38123
+            },
+            {
+                "name":"Piazza Di Fiera",
+                "address":"Piazza di Fiera",
+                "city": "Trento",
+                "cap":38122
+            },
+            {
+                "name":"Brennero Malvasia",
+                "address":"Brennero Malvasia",
+                "city": "Trento",
+                "cap":38122
+            }
+        ]
+    },
+    {
+        "Users":[
+            {
+                "username": "Cristian Zeni",
+                "email":"cristian.zeni@studenti.unitn.it",
+                "pwd": "abc",
+                "type": "Admin",
+                "disability":false
+            },
+            {
+                "username":"Trentino Trasporti",
+                "email": "t.t@gmail.com",
+                "pwd":"signorTram",
+                "type": "Operatore",
+                "disability": false
+            },
+            {
+                "username":"Aliport",
+                "email": "Aliport2004@gmail.com",
+                "pwd":"evviva",
+                "type": "Default",
+                "disability": false
+            }
+        ]
+    }
+]
