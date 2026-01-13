@@ -1,0 +1,315 @@
+openapi: 3.0.4
+info:
+  title: MakeYourMove OpenAPI 3.0
+  description: API per la gestione delle prenotazioni delle fermate
+  license:
+    name: MIT
+  version: "1.0"
+servers:
+- url: http://localhost:8080/api/v1
+  description: Localhost
+- url: https://make-your-move.onrender.com/api/v1
+  description: render.com
+paths:
+  /auth:
+    post:
+      summary: Authenticate a user
+      description: Authenticate a user and returns a JWT 'token'.
+      requestBody:
+        description: Email and password are required into the body.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/auth_body"
+            examples:
+              example1:
+                value:
+                  email: mario.rossi@unitn.it
+                  password: password
+        required: true
+      responses:
+        "200":
+          description: Token created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200"
+        "401":
+          description: Unauthorised. Invalid credentials
+  /users:
+    get:
+      summary: View all users
+      description: "View all the users It is possible to show users by their role /users?role={role}"
+      parameters:
+      - name: role
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - default
+          - operator
+          - admin
+      responses:
+        "200":
+          description: Collection of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      summary: Register a new user
+      description: Creates a new user in the system.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+            examples:
+              example1:
+                value:
+                  username: Mario Rossi
+                  email: mario.rossi@unitn.it
+                  pwd: "123"
+                  role: default
+                  disability: false
+      responses:
+        "201":
+          description: User created. Link in the Location header
+          headers:
+            Location:
+              description: Link to the newly created user.
+              schema:
+                type: string
+  /stations:
+    get:
+      summary: View all the stations
+      description: Gets the list of the available stations.
+      responses:
+        "200":
+          description: Collection of stations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Station"
+    post:
+      summary: Add a new station
+      description: Creates a new station in the system.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Station"
+            examples:
+              example1:
+                value:
+                  name: Piazza Dante
+                  address: Piazza Dante
+                  city: Trento
+                  CAP: 38122
+      responses:
+        "201":
+          description: Station created. Link in the Location header
+          headers:
+            Location:
+              description: Link to the newly created station.
+              schema:
+                type: string
+  /stations/{stationId}:
+    get:
+      summary: View a station
+      description: Gets the station with the given ID.
+      parameters:
+      - name: stationId
+        in: path
+        description: ID of the station
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Station found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Station"
+        "404":
+          description: Station not found
+    delete:
+      summary: Delete a station
+      description: Deletes the station with the given ID.
+      parameters:
+      - name: stationId
+        in: path
+        description: ID of the station
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Station deleted
+        "404":
+          description: Station not found
+  /routes:
+    get:
+      summary: View all routes
+      description: "Gets the list of the routes expressed by users. It is possible to show routes by userId /booklendings?userId={user}"
+      parameters:
+      - name: userId
+        in: query
+        required: false
+        schema:
+          type: string
+          description: ID of the user
+      responses:
+        "200":
+          description: Collection of routes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Route"
+      security:
+      - TokenQueryAuth: []
+        XAccessTokenHeaderAuth: []
+    post:
+      summary: Create a route request
+      description: "Creates a new route request. Token must be passed in the header. The user and station must already exist in the system. The route request will be created with the next available date, but with the hour specified by the user."
+      requestBody:
+        description: "The route object to be created. The user and station must already exist in the system. The route request will be created with the next available date, but with the hour specified by the user."
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Route"
+            examples:
+              example1:
+                value:
+                  user: http://localhost:8080/api/v1/users/1
+                  stationA: http://localhost:8080/api/v1/stations/1
+                  stationB: http://localhost:8080/api/v1/stations/2
+                  DateOfArrival: 2026-01-01 09:00:00
+                  DateOfCreation: 2025-12-31 12:56:31
+        required: true
+      responses:
+        "201":
+          description: Route request created. Link in the Location header
+          headers:
+            Location:
+              schema:
+                type: string
+                description: Link to the newly created route request.
+      security:
+      - TokenQueryAuth: []
+        XAccessTokenHeaderAuth: []
+components:
+  schemas:
+    User:
+      required:
+      - disability
+      - email
+      - role
+      - username
+      type: object
+      properties:
+        self:
+          type: string
+          description: Link to the user
+        username:
+          type: string
+          description: Nickname of the user
+        email:
+          type: string
+          description: Email address of the user
+        role:
+          type: string
+          description: Type of the user. Default is the base level and Admin is the highest
+          enum:
+          - default
+          - operator
+          - admin
+        disability:
+          type: boolean
+          description: Tells whether the user has requested some type of accessibility options or not
+    Station:
+      required:
+      - CAP
+      - address
+      - city
+      - name
+      type: object
+      properties:
+        self:
+          type: string
+          description: Link to the station
+        name:
+          type: string
+          description: Name of the station
+        address:
+          type: string
+          description: Address of the station
+        city:
+          type: string
+          description: City of the station
+        CAP:
+          type: integer
+          description: CAP of the station
+    Route:
+      required:
+      - station
+      - user
+      type: object
+      properties:
+        self:
+          type: string
+          description: Link to the route request
+        user:
+          type: string
+          description: Link to the user
+        station:
+          type: string
+          description: Link to the station
+        dateofarrival:
+          type: string
+          description: Date specified by the user for the route request
+          format: date-time
+        dateofcreation:
+          type: string
+          description: Date specified by the user for the route request
+          format: date-time
+    auth_body:
+      required:
+      - email
+      - pwd
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email address of the user
+        pwd:
+          type: string
+          description: Password of the user
+    inline_response_200:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: True if auth is successful
+        token:
+          type: string
+          description: JWT token
+  securitySchemes:
+    XAccessTokenHeaderAuth:
+      type: apiKey
+      description: The API authentication. The API key must be passed in the header 'x-access-token'. The API key must be a valid JWT token.
+      name: x-access-token
+      in: header
+    TokenQueryAuth:
+      type: apiKey
+      description: The API authentication. The API key must be passed in the query string 'token'. The API key must be a valid JWT token.
+      name: token
+      in: query
