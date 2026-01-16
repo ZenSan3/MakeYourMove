@@ -1,12 +1,16 @@
-const express = require('express');
+import express from "express";
 const app = express();
 const port = 8080;
+
+import mongoose from "mongoose";
+mongoose.connect("mongodb://localhost:27017/makeyourmove");
+const Station = mongoose.model("Station", {name: String, address: String, city: String, CAP: Number});
 
 app.use(express.json());
 
 app.get('/api/stations', async (req, res)=>{
-    let response = {nome: 'Piazza Dante'};
-    res.status(201).send(JSON.stringify(response));
+    const stations = await Station.find().exec();
+    res.status(201).send(stations);
 });
 
 app.get('/api/stations/:nome', async (req, res)=>{
