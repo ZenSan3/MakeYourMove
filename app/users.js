@@ -7,4 +7,9 @@ router.get('', async (req, res)=>{
     res.status(201).send(users);
 });
 
+router.get('/:username', async (req, res)=>{
+    const user = await User.findOne({username: req.params.username}).exec();
+    res.status(201).send(user);
+});
+
 export default router;

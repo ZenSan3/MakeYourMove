@@ -8,7 +8,8 @@ router.get('', async (req, res)=>{
 });
 
 router.get('/:nome', async (req, res)=>{
-    
+    const station = await Station.find({name: req.params.nome}).exec();
+    res.status(201).send(station);
 });
 
 
