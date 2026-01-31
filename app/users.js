@@ -1,6 +1,7 @@
 import express from 'express';
 import User from './models/user.js'
 const router = express.Router();
+router.use(express.json());
 
 router.get('', async (req, res)=>{
     const users = await User.find().exec();
@@ -10,6 +11,21 @@ router.get('', async (req, res)=>{
 router.get('/:username', async (req, res)=>{
     const user = await User.findOne({username: req.params.username}).exec();
     res.status(200).send(user);
+});
+
+router.post('', async (req, res)=>{
+    console.log(req.body);
+    const Nuser = await User.create({
+        username: req.body.username,
+        email: req.body.email,
+        pwd: req.body.pwd,
+        role: req.body.role,
+        disability: req.body.disability
+    });
+
+    Nuser.save().then(()=>console.log('saved'));
+
+    res.status(201).send("Saved");
 });
 
 export default router;
