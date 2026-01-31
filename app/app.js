@@ -3,7 +3,8 @@ import stations from './stations.js';
 import users from './users.js';
 import routes from './routes.js';
 
-const app = express();
+var app = express();
+app.use(express.json());
 const port = 8080;
 
 
