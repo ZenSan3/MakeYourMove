@@ -13,7 +13,16 @@ router.get('/:nome', async (req, res)=>{
 });
 
 router.post('', async (req, res)=>{
-    console.log(req.body)
+    console.log(req.body);
+    const nstation = await Station.create({
+        name: req.body.name,
+        address: req.body.address,
+        city: req.body.city,
+        CAP: req.body.CAP
+    });
+
+    nstation.save().then(()=>console.log('saved'));
+
     res.status(201).send("saved");
 })
 
