@@ -1,6 +1,7 @@
 import express from 'express';
 import Route from './models/route.js'
 const router = express.Router();
+router.use(express.json());
 
 router.get('', async (req, res)=>{
     const routes = await Route.find().exec();
@@ -10,6 +11,22 @@ router.get('', async (req, res)=>{
 router.get('/:date', async (req, res)=>{
     const routes = await Route.find().where("dateOfDeparture").gt(req.params.date);
     res.status(200).send(routes);
+});
+
+router.post('', async (req, res) =>{
+    console.log(req.body);
+    if(req.body.dateOfDeparture <= Date.now){
+        res.status(406).send('Date not valid');
+    }else{
+        const nroot = await Route.create({
+            user: req.body.user,
+            stationA: req.body.stationA,
+            stationB: req.body.stationB,
+            dateOfDeparture: req.body.dateOfDeparture,
+        });
+        nroot.save().then(() => console.log('saved'));
+        res.status(201).send('saved');
+    }
 });
 
 export default router;
