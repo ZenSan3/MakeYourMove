@@ -26,4 +26,10 @@ router.post('', async (req, res)=>{
     res.status(201).send("saved");
 })
 
+router.delete('/:nome', async (req, res) =>{
+    console.log(req.params);
+    await Station.deleteOne({name: req.params.nome})
+    res.status(202).send('Deleted');
+});
+
 export default router;

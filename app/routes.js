@@ -29,4 +29,10 @@ router.post('', async (req, res) =>{
     }
 });
 
+router.delete('/:id', async (req, res) =>{
+    console.log(req.params);
+    await Route.deleteOne({_id: req.params.id})
+    res.status(202).send('Deleted');
+});
+
 export default router;

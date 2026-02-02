@@ -28,4 +28,10 @@ router.post('', async (req, res)=>{
     res.status(201).send("Saved");
 });
 
+router.delete('/:email', async (req, res)=>{
+    console.log(req.params);
+    await User.deleteOne({email: req.params.email})
+    res.status(202).send('Deleted');
+});
+
 export default router;
