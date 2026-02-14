@@ -8,8 +8,14 @@ router.get('', async (req, res)=>{
     res.status(200).send(routes);
 });
 
-router.get('/:date', async (req, res)=>{
+router.get('/all/:date', async (req, res)=>{
     const routes = await Route.find().where("dateOfDeparture").gt(req.params.date);
+    res.status(200).send(routes);
+});
+
+router.get('/:user', async (req, res)=>{
+    const routes = await Route.find({user: req.params.user}).exec();
+    if(!routes) {res.status(401).json({success: false, message:'no routes created by user'})}
     res.status(200).send(routes);
 });
 

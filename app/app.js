@@ -10,7 +10,8 @@ app.use(express.json());
 const port = 8080;
 
 app.use('/api/authentication', authentication);
-app.use('/api/users/me', tokenChecker)
+app.use('/api/users/me', tokenChecker);
+app.use('/api/routes', tokenChecker)
 
 app.use('/api/stations', stations);
 app.use('/api/users', users);
