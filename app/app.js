@@ -2,11 +2,15 @@ import express from 'express';
 import stations from './stations.js';
 import users from './users.js';
 import routes from './routes.js';
+import authentication from './autentication.js';
+import tokenChecker from './tokenChecker.js';
 
 var app = express();
 app.use(express.json());
 const port = 8080;
 
+app.use('/api/authentication', authentication);
+app.use('/api/users/me', tokenChecker)
 
 app.use('/api/stations', stations);
 app.use('/api/users', users);
