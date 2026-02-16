@@ -5,6 +5,11 @@ import 'dotenv/config';
 const router = express.Router();
 router.use(express.json());
 
+/**
+ * Authentication for the users to access protected routes
+ * 
+ * Return the token to put in the header if the user exist and the password is the same
+ */
 router.post('', async function(req, res){
     let user = await User.findOne({email: req.body.email}).exec();
 
