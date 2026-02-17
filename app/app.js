@@ -1,4 +1,5 @@
 import express from 'express';
+import 'dotenv/config';
 import stations from './stations.js';
 import users from './users.js';
 import routes from './routes.js';
@@ -7,12 +8,16 @@ import tokenChecker from './tokenChecker.js';
 
 var app = express();
 app.use(express.json());
-const port = 8080;
+const port = process.env.Port;
 
+//Path to authenticate
 app.use('/api/authentication', authentication);
-app.use('/api/users/me', tokenChecker);
+
+//Paths that are protected by the authentication
+app.use('/api/users', tokenChecker);
 app.use('/api/routes', tokenChecker)
 
+//Paths that are not protected by the authentication
 app.use('/api/stations', stations);
 app.use('/api/users', users);
 app.use('/api/routes', routes);
