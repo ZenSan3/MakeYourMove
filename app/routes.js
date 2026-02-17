@@ -49,7 +49,8 @@ router.get('/:user', async (req, res)=>{
  */
 router.post('', async (req, res) =>{
     console.log(req.body);
-    if(req.body.dateOfDeparture <= Date.now){
+    const data = new Date(req.body.dateOfDeparture)
+    if(data.getTime() <= Date.now()){
         res.status(406).send('Date not valid');
     }else{
         const nroot = await Route.create({
