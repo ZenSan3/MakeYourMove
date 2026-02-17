@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import 'dotenv/config'; 
 const {Schema, SchemaTypes} = mongoose;
-mongoose.connect("mongodb://localhost:27017/makeyourmove");
+mongoose.connect(process.env.Mongo);
 const SchemaUsers = new Schema({
     username: {type: String, required: true},
     email: {type: String, required: true},
