@@ -15,7 +15,7 @@ app.use('/api/authentication', authentication);
 
 //Paths that are protected by the authentication
 app.use('/api/users', tokenChecker);
-app.use('/api/routes', tokenChecker)
+app.use('/api/routes', tokenChecker);
 
 //Paths that are not protected by the authentication
 app.use('/api/stations', stations);
