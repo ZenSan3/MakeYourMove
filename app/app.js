@@ -16,11 +16,11 @@ app.use('/api/authentication', authentication);
 //Paths that are protected by the authentication
 app.use('/api/users', tokenChecker);
 app.use('/api/routes', tokenChecker);
+app.use('/api/users', users);
+app.use('/api/routes', routes);
 
 //Paths that are not protected by the authentication
 app.use('/api/stations', stations);
-app.use('/api/users', users);
-app.use('/api/routes', routes);
 
 app.listen(port, ()=>{
     console.log(`example app listening on port ${port}`)

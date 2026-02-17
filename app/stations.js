@@ -22,9 +22,13 @@ router.get('', async (req, res)=>{
  * @param {String} nome
  * 
  */
-router.get('/:nome', async (req, res)=>{
-    const station = await Station.find({name: req.params.nome}).exec();
-    res.status(200).send(station);
+router.get('/:name', async (req, res)=>{
+    const station = await Station.findOne({name: req.params.name}).exec();
+    if(!station){
+        res.status(404).json({success: false, message: "Station not Found"})
+    }else{
+        res.status(200).send(station);
+    }
 });
 
 /**
@@ -59,8 +63,14 @@ router.post('', async (req, res)=>{
  */
 router.delete('/:nome', async (req, res) =>{
     console.log(req.params);
-    await Station.deleteOne({name: req.params.nome})
-    res.status(202).send('Deleted');
+    const station = Station.findOne({name: req.params.nome}).exec();
+
+    if(!station){
+        res.status(404).json({success: false, message:"Station not Found"});
+    }else{
+        await Station.deleteOne({name: req.params.nome})
+        res.status(202).send('Deleted');
+    }
 });
 
 export default router;

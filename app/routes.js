@@ -64,7 +64,7 @@ router.post('', async (req, res) =>{
 
     if(!user){
         res.status(400).json({success: "false", message: "Requested user do not exist"});
-    }else if(!sA || !sB){
+    }else if(!sA && !sB){
         res.status(400).json({success: "false", message: "Requested station do not exist"});
     }else if(data.getTime() <= Date.now()){
         res.status(406).send('Date not valid');
@@ -87,13 +87,24 @@ router.post('', async (req, res) =>{
  * @param {*} res 
  * @param {String} id
  */
-router.delete('/:id', async (req, res) =>{
-    console.log(req.params);
-    const station = await Route.findOne({_id:req.params.id}).exec();
-    if(!station){
-        res.status(404).json({success: false, message: "Route with requested id do not exist"})
+router.delete('/', async (req, res) =>{
+    console.log(req.body);
+
+    const route = await Route.findOne({
+            user: req.body.user,
+            stationA: req.body.stationA,
+            stationB: req.body.stationB,
+            dateOfDeparture: req.body.dateOfDeparture,
+        }).exec();
+    if(!route){
+        res.status(404).json({success: false, message: "Route with requested id do not exist"});
     }else{
-        await Route.deleteOne({_id: req.params.id})
+        await Route.deleteOne({
+            user: req.body.user,
+            stationA: req.body.stationA,
+            stationB: req.body.stationB,
+            dateOfDeparture: req.body.dateOfDeparture,
+        })
         res.status(202).send('Deleted');
     }
 });
