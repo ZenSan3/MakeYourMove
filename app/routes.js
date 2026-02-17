@@ -1,5 +1,7 @@
 import express from 'express';
-import Route from './models/route.js'
+import Route from './models/route.js';
+import User from './models/user.js';
+import Station from './models/station.js';
 const router = express.Router();
 router.use(express.json());
 
@@ -34,9 +36,14 @@ router.get('/all/:date', async (req, res)=>{
  * @param {String} user
  */
 router.get('/:user', async (req, res)=>{
-    const routes = await Route.find({user: req.params.user}).exec();
-    if(!routes) {res.status(401).json({success: false, message:'no routes created by user'})}
-    res.status(200).send(routes);
+    const user = await User.findOne({username: req.params.user}).exec();
+    if(!user){
+        res.status(400).json({success: false, message: "Requested User not found"});
+    }else{
+        const routes = await Route.find({user: req.params.user}).exec();
+        if(!routes) {res.status(401).json({success: false, message:'no routes created by user'})}
+        res.status(200).send(routes);
+    }
 });
 
 /**
@@ -49,8 +56,17 @@ router.get('/:user', async (req, res)=>{
  */
 router.post('', async (req, res) =>{
     console.log(req.body);
+
+    const user = User.findOne({username: req.body.user}).exec();
+    const sA = Station.findOne({name: req.body.stationA}).exec();
+    const sB = Station.findOne({name: req.body.stationB}).exec();
     const data = new Date(req.body.dateOfDeparture)
-    if(data.getTime() <= Date.now()){
+
+    if(!user){
+        res.status(400).json({success: "false", message: "Requested user do not exist"});
+    }else if(!sA || !sB){
+        res.status(400).json({success: "false", message: "Requested station do not exist"});
+    }else if(data.getTime() <= Date.now()){
         res.status(406).send('Date not valid');
     }else{
         const nroot = await Route.create({
@@ -73,8 +89,13 @@ router.post('', async (req, res) =>{
  */
 router.delete('/:id', async (req, res) =>{
     console.log(req.params);
-    await Route.deleteOne({_id: req.params.id})
-    res.status(202).send('Deleted');
+    const station = await Route.findOne({_id:req.params.id}).exec();
+    if(!station){
+        res.status(404).json({success: false, message: "Route with requested id do not exist"})
+    }else{
+        await Route.deleteOne({_id: req.params.id})
+        res.status(202).send('Deleted');
+    }
 });
 
 export default router;
