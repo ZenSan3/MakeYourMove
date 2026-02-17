@@ -1,0 +1,34 @@
+{
+    "stations":[
+        {
+            "name":"Piazza Dante",
+            "address":"Piazza Dante",
+            "city":"Trento",
+            "CAP":38122
+        },
+        {
+            "name":"Povo Polo Scientifico Ovest",
+            "address":"Via Sommarive",
+            "city": "Povo",
+            "CAP":38123
+        }
+    ],
+    "Routes":[
+        {
+            "user": "Aliport",
+            "stationA": "Piazza Dante",
+            "stationB": "Povo Polo Scientifico Ovest",
+            "dateOfDeparture": "2026-01-01T07:30:00" ,
+            "dateOfCreation": "2026-01-13T12:31:00"
+        }
+    ],
+    "Users":[
+            {
+                "username": "Cristian Zeni",
+                "email":"cristian.zeni@studenti.unitn.it",
+                "pwd": "test",
+                "role": "Admin",
+                "disability":false
+            }
+        ]
+}
