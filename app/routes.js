@@ -57,14 +57,14 @@ router.get('/:user', async (req, res)=>{
 router.post('', async (req, res) =>{
     console.log(req.body);
 
-    const user = User.findOne({username: req.body.user}).exec();
-    const sA = Station.findOne({name: req.body.stationA}).exec();
-    const sB = Station.findOne({name: req.body.stationB}).exec();
+    const user = await User.findOne({username: req.body.user}).exec();
+    const sA = await Station.findOne({name: req.body.stationA}).exec();
+    const sB = await Station.findOne({name: req.body.stationB}).exec();
     const data = new Date(req.body.dateOfDeparture)
 
     if(!user){
         res.status(400).json({success: "false", message: "Requested user do not exist"});
-    }else if(!sA && !sB){
+    }else if(!sA || !sB){
         res.status(400).json({success: "false", message: "Requested station do not exist"});
     }else if(data.getTime() <= Date.now()){
         res.status(406).send('Date not valid');
