@@ -8,6 +8,9 @@ router.use(express.json());
 /**
  * Authentication for the users to access protected routes
  * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
  * Return the token to put in the header if the user exist and the password is the same
  */
 router.post('', async function(req, res){
