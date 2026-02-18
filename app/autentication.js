@@ -17,7 +17,7 @@ router.post('', async function(req, res){
     let user = await User.findOne({email: req.body.email}).exec();
 
     if(!user){res.json({success:false, message: 'User not found'});}
-    if(user.password!=req.body.password){res.json({success: false, message:'Wrong password'});}
+    if(user.pwd!=req.body.pwd){res.json({success: false, message:'Wrong password'});}
 
     var payload = {email:user.email, id:user._id};
     var options = {expiresIn: 86400} //24h

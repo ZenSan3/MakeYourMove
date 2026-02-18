@@ -49,6 +49,17 @@ router.post('', async (req, res)=>{
     res.status(201).send("Saved");
 });
 
+router.put('/:email/changePassword', async (req, res)=>{
+    console.log(req.body);
+    const user = await User.findOne(req.params.email).exec();
+    if(!user){
+        res.status(404).json({success: false, message: "User not Found"});
+    }else{
+        await User.findOneAndUpdate(req.params.email, {pwd: req.body.pwd});
+        res.status(202).send('Updated');
+    }
+})
+
 /**
  * Delete a user with the given Email
  * 
