@@ -1,5 +1,6 @@
 import express from 'express';
 import Station from './models/station.js'
+import tokenChecker from './tokenChecker.js';
 var router = express.Router();
 
 /**

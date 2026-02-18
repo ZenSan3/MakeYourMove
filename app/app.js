@@ -7,6 +7,8 @@ import routes from './routes.js';
 import authentication from './autentication.js';
 import tokenChecker from './tokenChecker.js';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
+
 
 var app = express();
 app.use(express.json());
@@ -14,6 +16,8 @@ const port = process.env.Port;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "../static")));
+app.use(cors());
+
 
 //Path to authenticate
 app.use('/api/authentication', authentication);
