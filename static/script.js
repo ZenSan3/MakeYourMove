@@ -70,7 +70,7 @@ function baseUser(){
 function operator(){
     const ul = document.getElementById('Request');
     const stat = document.getElementById('Stats');
-    
+
     fetch(url + 'routes', {method: "GET", headers: {"x-access-token": loggedUser.token}})
     .then((res) => res.json())
     .then(function(data){
@@ -85,24 +85,24 @@ function operator(){
                 let departure = document.createElement('p');
                 let status = document.createElement('p');
                 let div = document.createElement('div');
-                let accept = document.createElement('button');
+                let approve = document.createElement('button');
                 let decline = document.createElement('button');
                 
-                accept.type = "button";
-                accept.onclick = function(){fetch(url + 'routes/' + element._id, {
+                approve.type = "button";
+                approve.onclick = function(){fetch(url + 'routes/' + element._id, {
                     method: "POST",
                     headers: {"x-access-token": loggedUser.token, 'Content-Type': 'application/json'},
-                    body: JSON.stringify({status: "Accepted"})
+                    body: JSON.stringify({status: "Approved"})
                 });}
-                accept.textContent = "Accetta";
+                approve.textContent = "Approva";
 
-                accept.type = "button";
-                accept.onclick = function(){fetch(url + 'routes/' + element._id, {
+                decline.type = "button";
+                decline.onclick = function(){fetch(url + 'routes/' + element._id, {
                     method: "POST",
                     headers: {"x-access-token": loggedUser.token, 'Content-Type': 'application/json'},
                     body: JSON.stringify({status: "Declined"})
                 });}
-                accept.textContent = "Accetta";
+                decline.textContent = "Declina";
 
                 user.textContent = "User: " + element.user;
                 stationA.textContent = "StationA: " + element.stationA;
