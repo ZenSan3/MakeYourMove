@@ -80,31 +80,32 @@ router.post('', async (req, res) =>{
     }
 });
 
-/**
+router.put('/:id', async(req,res)=>{
+    const route = await Route.findById(req.params.id).exec();
+    if(!route){
+        res.status(404).json({success: false, message: "Route not found"});
+    }else{
+        await Route.findByIdAndUpdate(req.params.id, {status: req.body.status});
+        res.status(202).send('Updated');
+    }
+})
+
+/** 
  * Delete a specific route using the id, because is the only univocal field
  * 
  * @param {*} req 
  * @param {*} res 
  * @param {String} id
  */
-router.delete('/', async (req, res) =>{
+router.delete('/:id', async (req, res) =>{
     console.log(req.body);
 
-    const route = await Route.findOne({
-            user: req.body.user,
-            stationA: req.body.stationA,
-            stationB: req.body.stationB,
-            dateOfDeparture: req.body.dateOfDeparture,
-        }).exec();
+    const route = await Route.findById(req.params.id).exec();
+
     if(!route){
         res.status(404).json({success: false, message: "Route with requested id do not exist"});
     }else{
-        await Route.deleteOne({
-            user: req.body.user,
-            stationA: req.body.stationA,
-            stationB: req.body.stationB,
-            dateOfDeparture: req.body.dateOfDeparture,
-        })
+        await Route.findByIdAndDelete(req.params.id);
         res.status(202).send('Deleted');
     }
 });

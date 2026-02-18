@@ -7,6 +7,7 @@ const SchemaRoute = new Schema({
     stationA: {type: String, required: true},
     stationB: {type: String, required: true},
     dateOfDeparture: {type: Date, required: true},
+    status: {type: String, default: "Pending"},
     dateOfCreation: {type: Date, default: Date.now}
 });
 const Route = mongoose.model("Route", SchemaRoute);

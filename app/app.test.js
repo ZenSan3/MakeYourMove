@@ -3,6 +3,7 @@ import 'dotenv/config';
 import fetch from 'node-fetch';
 import jwt from 'jsonwebtoken';
 import app from './app.js';
+import { type } from 'os';
 
 const url = process.env.API
 
@@ -25,14 +26,16 @@ test('Can be authenticated', async ()=>{
     expect(( await fetch( url+'authentication',
             {
                 method: "POST",
-                headers: "",
-                body:JSON.stringify(
-                    {
-                        email: "test.test@gmail.com",
-                        pwd: "passwordTest"
-                    }
-                ),
+                headers: {"Content-Type": "application/json"},
+                body:JSON.stringify({
+                    email: "test.test@gmail.com",
+                    pwd: "passwordTest"
+                }),
             }
         )).status
     ).toEqual(200);
+
+    
+
 })
+
