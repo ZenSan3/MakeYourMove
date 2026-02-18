@@ -68,19 +68,92 @@ function baseUser(){
 }
 
 function operator(){
-    const div = document.getElementById('Operator');
+    const ul = document.getElementById('Request');
+    const stat = document.getElementById('Stats');
     
     fetch(url + 'routes', {method: "GET", headers: {"x-access-token": loggedUser.token}})
     .then((res) => res.json())
     .then(function(data){
-        console.log(data);
+        data.forEach(element =>{
+            console.log(element);
+            if(element.status == "Pending"){
+                let li = document.createElement('li');
+                let span = document.createElement('span');
+                let user = document.createElement('a');
+                let stationA = document.createElement('p');
+                let stationB = document.createElement('p');
+                let departure = document.createElement('p');
+                let status = document.createElement('p');
+                let div = document.createElement('div');
+                let accept = document.createElement('button');
+                let decline = document.createElement('button');
+                
+                accept.type = "button";
+                accept.onclick = function(){fetch(url + 'routes/' + element._id, {
+                    method: "POST",
+                    headers: {"x-access-token": loggedUser.token, 'Content-Type': 'application/json'},
+                    body: JSON.stringify({status: "Accepted"})
+                });}
+                accept.textContent = "Accetta";
+
+                accept.type = "button";
+                accept.onclick = function(){fetch(url + 'routes/' + element._id, {
+                    method: "POST",
+                    headers: {"x-access-token": loggedUser.token, 'Content-Type': 'application/json'},
+                    body: JSON.stringify({status: "Declined"})
+                });}
+                accept.textContent = "Accetta";
+
+                user.textContent = "User: " + element.user;
+                stationA.textContent = "StationA: " + element.stationA;
+                stationB.textContent = "StationB: " + element.stationB;
+                departure.textContent = "Departure: " + element.dateOfDeparture;
+                status.textContent = "Status: " + element.status;
+
+                div.appendChild(accept);
+                div.appendChild(decline);
+                span.appendChild(user);
+                span.appendChild(stationA);
+                span.appendChild(stationB);
+                span.appendChild(departure);
+                span.appendChild(status);
+                span.append(div);
+                li.appendChild(span);
+                ul.appendChild(li);            
+            }
+        })
     });
+
+    fetch(url + 'users', {method: "GET", headers: {"x-access-token": loggedUser.token}})
+    .then((res) => res.json())
+    .then(function(users){
+        users.forEach(user => {
+            fetch(url + 'routes/'+user.username, {method: "GET", headers: {"x-access-token": loggedUser.token}})
+            .then((res) => res.json())
+            .then(function(data){
+                console.log(data);
+
+                let li = document.createElement('li');
+                let span = document.createElement('span');
+                let text = document.createElement('a');
+    
+                text.textContent = user.username + ": " + data.length;
+                span.appendChild(text);
+                li.appendChild(span);
+                stat.appendChild(li);  
+            });
+        });
+    })
+
 }
 
 function admin(){
 
 }
 
+function accepted(){
+    
+}
 
 function loadLendings() {
 

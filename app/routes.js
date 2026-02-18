@@ -80,13 +80,13 @@ router.post('', async (req, res) =>{
     }
 });
 
-router.put('/:id', async(req,res)=>{
+router.post('/:id', async(req,res)=>{
     const route = await Route.findById(req.params.id).exec();
     if(!route){
         res.status(404).json({success: false, message: "Route not found"});
     }else{
         await Route.findByIdAndUpdate(req.params.id, {status: req.body.status});
-        res.status(202).send('Updated');
+        res.status(201).send('Updated');
     }
 })
 
