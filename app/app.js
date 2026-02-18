@@ -30,3 +30,5 @@ app.use('/api/stations', stations);
 app.listen(port, ()=>{
     console.log(`example app listening on port ${port}`)
 });
+
+export default app;

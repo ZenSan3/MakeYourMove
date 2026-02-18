@@ -9,8 +9,9 @@
   "version": "1.0.0",
   "description": "MakeYourMove è una web app per migliorare lo spostamento all'interno della città di Trento, per consultare la documentazione andare alla repository https://github.com/ZenSan3/Progetto-Ingengeria-del-Software-Doc",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,10 @@
   "bugs": {
     "url": "https://github.com/ZenSan3/MakeYourMove/issues"
   },
-  "homepage": "https://github.com/ZenSan3/MakeYourMove#readme"
+  "homepage": "https://github.com/ZenSan3/MakeYourMove#readme",
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "node-fetch": "^3.3.2",
+    "supertest": "^7.2.2"
+  }
 }
