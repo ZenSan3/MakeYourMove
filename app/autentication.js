@@ -20,7 +20,7 @@ router.post('', async function(req, res){
     if(user.password!=req.body.password){res.json({success: false, message:'Wrong password'});}
 
     var payload = {email:user.email, id:user._id};
-    var options = {expiresIn: 86400}
+    var options = {expiresIn: 86400} //24h
     var token = jwt.sign(payload, process.env.SECRET, options);
 
     res.json({success: true, message: 'Token sended', token: token, email: user.email, id: user._id, self: "api/" + user._id});
