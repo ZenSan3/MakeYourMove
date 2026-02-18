@@ -148,11 +148,22 @@ function operator(){
 }
 
 function admin(){
+    var name = document.getElementById("stationName").value;
+    var address = document.getElementById("stationAddress").value;
+    var city = document.getElementById("stationCity").value;
+    var CAP = document.getElementById("stationCAP").value;
 
-}
+    /*fetch(url + 'routes/' + element._id, {
+        method: "POST",
+        headers: { "x-access-token": loggedUser.token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: "Approved" })})*/
 
-function accepted(){
-    
+    //fetch to insert a new station
+    fetch(url + 'stations/', {
+        method: 'POST',
+        headers: { "x-access-token": loggedUser.token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, address: address, city: city, CAP: CAP })
+    })
 }
 
 function loadLendings() {

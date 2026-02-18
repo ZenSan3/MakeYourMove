@@ -51,10 +51,12 @@
     <form action="api/stations" method="post" name="stationform" id="stationform">
         <h2>Inserisci fermata:</h2>
         <span>Nuova fermata:</span>
-        <span id="loggedUser"></span>
-        <input name="email" value="test.test@gmail.com" id="loginEmail" />
-        <input name="pwd" value="passwordTest" id="loginPassword" />
-        <button type="button" onclick="login()">LogIn</button>
+        <span id="stationCreation"></span>
+        <input name="name" value="Nome fermata" id="stationName" />
+        <input name="address" value="Indirizzo" id="stationAddress" />
+        <input name="city" value="città" id="stationCity" />
+        <input name="CAP" value="CAP" id="stationCAP" />
+        <button type="button" onclick="admin()">Invia</button>
     </form>
 </body>
 
