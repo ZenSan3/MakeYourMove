@@ -1,4 +1,5 @@
 var loggedUser = {};
+const url = "https://makeyourmove.onrender.com/api/";
 
 function login()
 {
@@ -8,7 +9,7 @@ function login()
     console.log(email);
     console.log(pwd);
 
-    fetch('https://makeyourmove.onrender.com/api/authentication', {
+    fetch(url + 'authentication', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email, pwd: pwd })
@@ -23,7 +24,19 @@ function login()
         loggedUser.self = data.self;
         // loggedUser.id = loggedUser.self.substring(loggedUser.self.lastIndexOf('/') + 1);
         document.getElementById("loggedUser").textContent = loggedUser.email;
-        baseUser();
+
+        switch (data.role) {
+            case "Operator":
+                baseUser();
+                operator();
+                break;
+            case "Admin":
+                baseUser();
+                operator();
+                admin();
+                break;
+            default: baseUser(); break;
+        }
         return;
     })
     .catch( error => console.error(error) ); // If there is any error you will catch them here
@@ -35,7 +48,7 @@ function baseUser(){
     let ul = document.getElementById("Stazioni");
     let div = document.getElementsByClassName("UserBase");
 
-    fetch('https://makeyourmove.onrender.com/api/stations')
+    fetch(url + 'stations')
     .then((res) => res.json())
     .then(function(data){
         data.forEach(element => {
@@ -54,7 +67,19 @@ function baseUser(){
     })
 }
 
+function operator(){
+    const div = document.getElementById('Operator');
+    
+    fetch(url + 'routes', {method: "GET", headers: {"x-access-token": loggedUser.token}})
+    .then((res) => res.json())
+    .then(function(data){
+        console.log(data);
+    });
+}
 
+function admin(){
+
+}
 
 
 function loadLendings() {
