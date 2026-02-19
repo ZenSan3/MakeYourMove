@@ -95,8 +95,14 @@ function baseUser(){
 }
 
 function operator(){
-    const ul = document.getElementById('Request');
-    const stat = document.getElementById('Stats');
+    var operator = document.getElementById("Operator");
+    var req = document.createElement('ul');
+    var stat = document.createElement('ul');
+    var mainR = document.createElement('h2');
+    var mainS =  document.createElement('h2');
+    mainR.textContent = "Tratte Richieste";
+    mainS.textContent = "Statistiche";
+
 
     fetch(url + 'routes', {method: "GET", headers: {"x-access-token": loggedUser.token}})
     .then((res) => res.json())
@@ -146,10 +152,13 @@ function operator(){
                 span.appendChild(status);
                 span.append(div);
                 li.appendChild(span);
-                ul.appendChild(li);            
+                req.appendChild(li);            
             }
         })
     });
+    operator.appendChild(mainR);
+    operator.appendChild(req);
+    operator.appendChild(mainS);
 
     fetch(url + 'users', {method: "GET", headers: {"x-access-token": loggedUser.token}})
     .then((res) => res.json())
@@ -171,10 +180,15 @@ function operator(){
             });
         });
     })
+    operator.appendChild(stat);
 
 }
 
 function admin(){
+
+    var stazioni = document.getElementById("nStations");
+    stazioni.style = "visibility:visible";
+
     var name = document.getElementById("stationName").value;
     var address = document.getElementById("stationAddress").value;
     var city = document.getElementById("stationCity").value;
