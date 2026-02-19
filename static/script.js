@@ -74,6 +74,8 @@ function baseUser(){
     
     var ul = document.getElementById("Stazioni");
     var div = document.getElementsByClassName("UserBase");
+    var request = document.getElementById("rRoot");
+    request.style = "visibility:visible";
 
     fetch(url + 'stations')
     .then((res) => res.json())
