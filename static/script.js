@@ -3,45 +3,46 @@ const url = "https://makeyourmove.onrender.com/api/";
 
 function login()
 {
-    //get the form object
-    var email = document.getElementById("loginEmail").value;
-    var pwd = document.getElementById("loginPassword").value;
-    console.log(email);
-    console.log(pwd);
-
-    fetch(url + 'authentication', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, pwd: pwd })
-    })
-    .then((res) => res.json())
-    .then(function(data) { // Here you get the data to modify as you please
-        console.log(data);
-        //console.log(data.token);
-        loggedUser.token = data.token;
-        loggedUser.email = data.email;
-        loggedUser.user = data.user;
-        loggedUser.id = data.id;
-        loggedUser.self = data.self;
-        // loggedUser.id = loggedUser.self.substring(loggedUser.self.lastIndexOf('/') + 1);
-        document.getElementById("loggedUser").textContent = loggedUser.user;
-
-        switch (data.role) {
-            case "Operator":
-                baseUser();
-                operator();
-                break;
-            case "Admin":
-                baseUser();
-                operator();
-                admin();
-                break;
-            default: baseUser(); break;
-        }
-        return;
-    })
-    .catch( error => console.error(error) ); // If there is any error you will catch them here
-
+    if(!loggedUser.token){
+        //get the form object
+        var email = document.getElementById("loginEmail").value;
+        var pwd = document.getElementById("loginPassword").value;
+        console.log(email);
+        console.log(pwd);
+    
+        fetch(url + 'authentication', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, pwd: pwd })
+        })
+        .then((res) => res.json())
+        .then(function(data) { // Here you get the data to modify as you please
+            console.log(data);
+            //console.log(data.token);
+            loggedUser.token = data.token;
+            loggedUser.email = data.email;
+            loggedUser.user = data.user;
+            loggedUser.id = data.id;
+            loggedUser.self = data.self;
+            // loggedUser.id = loggedUser.self.substring(loggedUser.self.lastIndexOf('/') + 1);
+            document.getElementById("loggedUser").textContent = loggedUser.user;
+    
+            switch (data.role) {
+                case "Operator":
+                    baseUser();
+                    operator();
+                    break;
+                case "Admin":
+                    baseUser();
+                    operator();
+                    admin();
+                    break;
+                default: baseUser(); break;
+            }
+            return;
+        })
+        .catch( error => console.error(error) ); // If there is any error you will catch them here
+    }
 };
 
 function baseUser(){
@@ -94,7 +95,7 @@ function operator(){
                     method: "POST",
                     headers: {"x-access-token": loggedUser.token, 'Content-Type': 'application/json'},
                     body: JSON.stringify({status: "Approved"})
-                }).then(()=>{window.Location.reload(true);});}
+                });};
                 approve.textContent = "Approva";
 
                 decline.type = "button";
@@ -102,7 +103,7 @@ function operator(){
                     method: "POST",
                     headers: {"x-access-token": loggedUser.token, 'Content-Type': 'application/json'},
                     body: JSON.stringify({status: "Declined"})
-                }).then(()=>{window.Location.reload(true);});}
+                });};
                 decline.textContent = "Declina";
 
                 user.textContent = "User: " + element.user;
@@ -164,8 +165,6 @@ function admin(){
         method: 'POST',
         headers: { "x-access-token": loggedUser.token, 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: name, address: address, city: city, CAP: CAP })
-    }).then(()=>{
-        window.Location.reload(true);
     });
 }
 
@@ -178,7 +177,5 @@ function sendRoute(){
         method: 'POST',
         headers: { "x-access-token": loggedUser.token, 'Content-Type': 'application/json' },
         body: JSON.stringify({ user: loggedUser.user, stationA: stationA, stationB: stationB, dateOfDeparture: dateOfDeparture })
-    }).then(()=>{
-        window.Location.reload(true);
     });
 }
