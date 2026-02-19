@@ -62,7 +62,8 @@ function login()
                     operator();
                     admin();
                     break;
-                default: baseUser(); break;
+                case "User": baseUser(); break;
+                default: break;
             }
             return;
         })
@@ -72,10 +73,15 @@ function login()
 
 function baseUser(){
     
-    var ul = document.getElementById("Stazioni");
-    var div = document.getElementsByClassName("UserBase");
+    var ul = document.createElement("ul");
+    var div = document.getElementById("UserBase");
     var request = document.getElementById("rRoot");
     request.style = "visibility:visible";
+    var map = document.getElementById("Map");
+    map.style = "visibility:visible";
+    var h2 = document.createElement("h2");
+    h2.textContent = "Elenco Stazioni";
+    div.appendChild(h2);
 
     fetch(url + 'stations')
     .then((res) => res.json())
@@ -94,6 +100,7 @@ function baseUser(){
             ul.appendChild(li);
         });
     })
+    div.appendChild(ul);
 }
 
 function operator(){

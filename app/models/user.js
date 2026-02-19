@@ -6,7 +6,7 @@ const SchemaUsers = new Schema({
     username: {type: String, required: true},
     email: {type: String, required: true},
     pwd: {type: String, required: true},
-    role: {type: String, default: "Default"},
+    role: {type: String, default: "User"},
     disability: {type: Boolean, default: false},
 });
 const User = mongoose.model("User", SchemaUsers);
