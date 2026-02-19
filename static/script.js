@@ -20,10 +20,11 @@ function login()
         //console.log(data.token);
         loggedUser.token = data.token;
         loggedUser.email = data.email;
+        loggedUser.user = data.user;
         loggedUser.id = data.id;
         loggedUser.self = data.self;
         // loggedUser.id = loggedUser.self.substring(loggedUser.self.lastIndexOf('/') + 1);
-        document.getElementById("loggedUser").textContent = loggedUser.email;
+        document.getElementById("loggedUser").textContent = loggedUser.user;
 
         switch (data.role) {
             case "Operator":
@@ -45,8 +46,8 @@ function login()
 
 function baseUser(){
     
-    let ul = document.getElementById("Stazioni");
-    let div = document.getElementsByClassName("UserBase");
+    var ul = document.getElementById("Stazioni");
+    var div = document.getElementsByClassName("UserBase");
 
     fetch(url + 'stations')
     .then((res) => res.json())
@@ -54,9 +55,9 @@ function baseUser(){
         data.forEach(element => {
             console.log(element);
             
-            let li = document.createElement('li');
-            let span = document.createElement('span');
-            let a = document.createElement('a');
+            var li = document.createElement('li');
+            var span = document.createElement('span');
+            var a = document.createElement('a');
             a.textContent = element.name;
             
             // Append all our elements
@@ -77,16 +78,16 @@ function operator(){
         data.forEach(element =>{
             console.log(element);
             if(element.status == "Pending"){
-                let li = document.createElement('li');
-                let span = document.createElement('span');
-                let user = document.createElement('a');
-                let stationA = document.createElement('p');
-                let stationB = document.createElement('p');
-                let departure = document.createElement('p');
-                let status = document.createElement('p');
-                let div = document.createElement('div');
-                let approve = document.createElement('button');
-                let decline = document.createElement('button');
+                var li = document.createElement('li');
+                var span = document.createElement('span');
+                var user = document.createElement('a');
+                var stationA = document.createElement('p');
+                var stationB = document.createElement('p');
+                var departure = document.createElement('p');
+                var status = document.createElement('p');
+                var div = document.createElement('div');
+                var approve = document.createElement('button');
+                var decline = document.createElement('button');
                 
                 approve.type = "button";
                 approve.onclick = function(){fetch(url + 'routes/' + element._id, {
@@ -133,9 +134,9 @@ function operator(){
             .then(function(data){
                 console.log(data);
 
-                let li = document.createElement('li');
-                let span = document.createElement('span');
-                let text = document.createElement('a');
+                var li = document.createElement('li');
+                var span = document.createElement('span');
+                var text = document.createElement('a');
     
                 text.textContent = user.username + ": " + data.length;
                 span.appendChild(text);
@@ -163,11 +164,13 @@ function admin(){
         method: 'POST',
         headers: { "x-access-token": loggedUser.token, 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: name, address: address, city: city, CAP: CAP })
-    })
+    });
+
+
+
 }
 
 function sendRoute(){
-    var user = document.getElementById("routeName").value;
     var stationA = document.getElementById("routeA").value;
     var stationB = document.getElementById("routeB").value;
     var dateOfDeparture = document.getElementById("routeDate").value;
@@ -175,6 +178,6 @@ function sendRoute(){
     fetch(url + 'routes/', {
         method: 'POST',
         headers: { "x-access-token": loggedUser.token, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user: user, stationA: stationA, stationB: stationB, dateOfDeparture: dateOfDeparture })
+        body: JSON.stringify({ user: loggedUser.user, stationA: stationA, stationB: stationB, dateOfDeparture: dateOfDeparture })
     })
 }

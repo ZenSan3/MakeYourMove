@@ -23,7 +23,7 @@ router.post('', async function(req, res){
     var options = {expiresIn: 86400} //24h
     var token = jwt.sign(payload, process.env.SECRET, options);
 
-    res.json({success: true, message: 'Token sended', token: token, email: user.email, id: user._id, role: user.role, self: "api/" + user._id});
+    res.json({success: true, message: 'Token sended', token: token, email: user.email, id: user._id, user: user.username ,role: user.role, self: "api/" + user._id});
 });
 
 export default router;
