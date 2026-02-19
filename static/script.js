@@ -2,17 +2,31 @@ var loggedUser = {};
 const url = "https://makeyourmove.onrender.com/api/";
 
 function createUser(){
-    var temp;
+    var usernameC = document.getElementById("createUser").value;
+    var emailC = document.getElementById("createEmail").value;
+    var pwdC = document.getElementById("createPassword").value;
 
     fetch(url + 'authentication', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: "creator.creator@gmail.com", pwd: "create" })
-        })
-        .then((res) => res.json())
-        .then(function(data) {});
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: "creator.creator@gmail.com", pwd: "create" })
+    })
+    .then((res) => res.json())
+    .then(function(data) {
+        var temp = data.token;
 
-}
+        fetch(url + 'users', {
+        method: 'POST',
+        headers: { 'x-access-token': temp, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+                user: usernameC, 
+                email: emailC,
+                pwd: pwdC
+            })
+        })
+        document.getElementById("Creation").textContent ="Utente Registrato";
+    });
+};
 
 function login()
 {

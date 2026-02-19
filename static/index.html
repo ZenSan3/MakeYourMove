@@ -13,16 +13,15 @@
 
     <h1>Make Your Move</h1>
     <h2>Registrati:</h2>
-    <form action="api/users" method="post" name="loginform" id="loginform">
-        <span>Inserisci i dati:</span>
-        <span id="loggedUser"></span>
-        <input name="user" value="passwordTest" id="createUser" />
-        <input name="email" value="test.test@gmail.com" id="createEmail" />
-        <input name="pwd" type="password" value="passwordTest" id="createPassword" />
-        <button type="button" onclick="login()">Crea</button>
+    <form action="api/users" method="post" name="registerform" id="registerform">
+        <span id="Creation">Crea il tuo Utente</span>
+        <input name="user" value="username" id="createUser" />
+        <input name="email" value="email" id="createEmail" />
+        <input name="pwd" type="password" value="password" id="createPassword" />
+        <button type="button" onclick="createUser()">Crea</button>
     </form>
-    <h2>Login:</h2>
 
+    <h2>Login:</h2>
     <form action="api/users" method="post" name="loginform" id="loginform">
         <span>Logged User:</span>
         <span id="loggedUser"></span>
