@@ -80,6 +80,14 @@ router.post('', async (req, res) =>{
     }
 });
 
+/**
+ * Change the status of a route from pending to either approved or declined
+ * 
+ * @param {*} req 
+ * @param {*} res
+ * 
+ * the body must contain the status in JSON form
+ */
 router.post('/:id', async(req,res)=>{
     const route = await Route.findById(req.params.id).exec();
     if(!route){

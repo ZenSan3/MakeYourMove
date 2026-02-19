@@ -49,7 +49,16 @@ router.post('', async (req, res)=>{
     res.status(201).send("Saved");
 });
 
-router.put('/:email/changePassword', async (req, res)=>{
+/**
+ * Change the password of an account
+ * 
+ * @param {*} req 
+ * @param {*} res
+ * @param {String} email
+ * 
+ * The body have to contain the new password in JSON form
+ */
+router.post('/:email/changePassword', async (req, res)=>{
     console.log(req.body);
     const user = await User.findOne(req.params.email).exec();
     if(!user){
