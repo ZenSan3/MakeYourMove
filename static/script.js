@@ -2,7 +2,7 @@ var loggedUser = {};
 const url = "https://makeyourmove.onrender.com/api/";
 
 function createUser(){
-    var usernameC = document.getElementById("createUser").value;
+    var usernameC = document.getElementById("createUsername").value;
     var emailC = document.getElementById("createEmail").value;
     var pwdC = document.getElementById("createPassword").value;
 
@@ -13,13 +13,11 @@ function createUser(){
     })
     .then((res) => res.json())
     .then(function(data) {
-        var temp = data.token;
-
         fetch(url + 'users', {
         method: 'POST',
-        headers: { 'x-access-token': temp, 'Content-Type': 'application/json' },
+        headers: { 'x-access-token': data.token, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-                user: usernameC, 
+                username: usernameC, 
                 email: emailC,
                 pwd: pwdC
             })
