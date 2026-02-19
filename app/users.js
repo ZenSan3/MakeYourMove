@@ -36,16 +36,20 @@ router.get('/:username', async (req, res)=>{
  */
 router.post('', async (req, res)=>{
     console.log(req.body);
-    const Nuser = await User.create({
-        username: req.body.username,
-        email: req.body.email,
-        pwd: req.body.pwd,
-        role: req.body.role,
-        disability: req.body.disability
-    });
+    const pUser = User.findOne({username:req.body.username, email:req.body.username});
+    if(pUser){
+        res.status(403).json({success:false, message:"User already exists"});
+    }else{
+        const Nuser = await User.create({
+            username: req.body.username,
+            email: req.body.email,
+            pwd: req.body.pwd,
+            role: req.body.role,
+            disability: req.body.disability
+        });
 
-    Nuser.save().then(()=>console.log('saved'));
-
+        Nuser.save().then(()=>console.log('saved'));
+    }
     res.status(201).send("Saved");
 });
 

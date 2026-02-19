@@ -32,8 +32,8 @@ function login()
         //get the form object
         var email = document.getElementById("loginEmail").value;
         var pwd = document.getElementById("loginPassword").value;
-        console.log(email);
-        console.log(pwd);
+        //console.log(email);
+        //console.log(pwd);
     
         fetch(url + 'authentication', {
             method: 'POST',
@@ -42,7 +42,7 @@ function login()
         })
         .then((res) => res.json())
         .then(function(data) { // Here you get the data to modify as you please
-            console.log(data);
+            //console.log(data);
             //console.log(data.token);
             loggedUser.token = data.token;
             loggedUser.email = data.email;
@@ -87,7 +87,7 @@ function baseUser(){
     .then((res) => res.json())
     .then(function(data){
         data.forEach(element => {
-            console.log(element);
+            //console.log(element);
             
             var li = document.createElement('li');
             var span = document.createElement('span');
@@ -117,7 +117,7 @@ function operator(){
     .then((res) => res.json())
     .then(function(data){
         data.forEach(element =>{
-            console.log(element);
+            //console.log(element);
             if(element.status == "Pending"){
                 var li = document.createElement('li');
                 var span = document.createElement('span');
@@ -176,7 +176,7 @@ function operator(){
             fetch(url + 'routes/'+user.username, {method: "GET", headers: {"x-access-token": loggedUser.token}})
             .then((res) => res.json())
             .then(function(data){
-                console.log(data);
+                //console.log(data);
 
                 var li = document.createElement('li');
                 var span = document.createElement('span');
@@ -225,34 +225,36 @@ function admin(){
         headers: { "x-access-token": loggedUser.token}}
     ).then((res)=>res.json())
     .then(function(data){
-        console.log(data);
+        //console.log(data);
         data.forEach(element => {
-            var li = document.createElement("li");
-            var div = document.createElement("div");
-            var span = document.createElement("span");
-            var username = document.createElement("a");
-            var email = document.createElement("p");
-            var role = document.createElement("p");
-            var del = document.createElement("button");
-
-            username.textContent = "Username: " + element.username;
-            email.textContent = "Email: " + element.email;
-            role.textContent = "Ruolo: " + element.role; 
-
-            del.type = "button";
-            del.onclick = function(){fetch(url + 'users/'+element.email, {
-                method: "DELETE",
-                headers: {"x-access-token": loggedUser.token, 'Content-Type': 'application/json'},
-            });};
-            del.textContent = "Elimina Account";
-
-            div.appendChild(del);
-            span.appendChild(username);
-            span.appendChild(email);
-            span.appendChild(role);
-            span.appendChild(div);
-            li.appendChild(span);
-            ul.appendChild(li);
+            if(!(element.username == "Creator" && element.email == "creator.creator@gmail.com")){
+                var li = document.createElement("li");
+                var div = document.createElement("div");
+                var span = document.createElement("span");
+                var username = document.createElement("a");
+                var email = document.createElement("p");
+                var role = document.createElement("p");
+                var del = document.createElement("button");
+    
+                username.textContent = "Username: " + element.username;
+                email.textContent = "Email: " + element.email;
+                role.textContent = "Ruolo: " + element.role; 
+    
+                del.type = "button";
+                del.onclick = function(){fetch(url + 'users/'+element.email, {
+                    method: "DELETE",
+                    headers: {"x-access-token": loggedUser.token, 'Content-Type': 'application/json'},
+                });};
+                del.textContent = "Elimina Account";
+    
+                div.appendChild(del);
+                span.appendChild(username);
+                span.appendChild(email);
+                span.appendChild(role);
+                span.appendChild(div);
+                li.appendChild(span);
+                ul.appendChild(li);
+            }
         });
     });
     us.appendChild(h2);
