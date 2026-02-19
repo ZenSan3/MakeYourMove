@@ -110,7 +110,7 @@ function operator(){
                 departure.textContent = "Departure: " + element.dateOfDeparture;
                 status.textContent = "Status: " + element.status;
 
-                div.appendChild(accept);
+                div.appendChild(approve);
                 div.appendChild(decline);
                 span.appendChild(user);
                 span.appendChild(stationA);
@@ -166,35 +166,15 @@ function admin(){
     })
 }
 
-function loadLendings() {
+function sendRoute(){
+    var user = document.getElementById("routeName").value;
+    var stationA = document.getElementById("routeA").value;
+    var stationB = document.getElementById("routeB").value;
+    var dateOfDeparture = document.getElementById("routeDate").value;
 
-    const ul = document.getElementById('bookLendings'); // Get the list where we will place our lendings
-
-    ul.innerHTML = '';
-
-    fetch('../api/v1/booklendings?studentId=' + loggedUser.id + '&token=' + loggedUser.token)
-    .then((resp) => resp.json()) // Transform the data into json
-    .then(function(data) { // Here you get the data to modify as you please
-        
-        console.log(data);
-        
-        return data.map( (entry) => { // Map through the results and for each run the code below
-            
-            // let bookId = book.self.substring(book.self.lastIndexOf('/') + 1);
-            
-            let li = document.createElement('li');
-            let span = document.createElement('span');
-            // span.innerHTML = `<a href="${entry.self}">${entry.book}</a>`;
-            let a = document.createElement('a');
-            a.href = entry.self
-            a.textContent = entry.book.title;
-            
-            // Append all our elements
-            span.appendChild(a);
-            li.appendChild(span);
-            ul.appendChild(li);
-        })
+    fetch(url + 'routes/', {
+        method: 'POST',
+        headers: { "x-access-token": loggedUser.token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user: user, stationA: stationA, stationB: stationB, dateOfDeparture: dateOfDeparture })
     })
-    .catch( error => console.error(error) );// If there is any error you will catch them here
-    
 }
