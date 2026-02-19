@@ -1,6 +1,19 @@
 var loggedUser = {};
 const url = "https://makeyourmove.onrender.com/api/";
 
+function createUser(){
+    var temp;
+
+    fetch(url + 'authentication', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: "creator.creator@gmail.com", pwd: "create" })
+        })
+        .then((res) => res.json())
+        .then(function(data) {});
+
+}
+
 function login()
 {
     if(!loggedUser.token){
@@ -166,6 +179,49 @@ function admin(){
         headers: { "x-access-token": loggedUser.token, 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: name, address: address, city: city, CAP: CAP })
     });
+
+    var us = document.getElementById("Users");
+    var h2 = document.createElement("h2");
+    var ul = document.createElement("ul");
+    h2.textContent = "Utenti";
+
+    fetch(url + 'users', {
+        method: 'GET',
+        headers: { "x-access-token": loggedUser.token}}
+    ).then((res)=>res.json())
+    .then(function(data){
+        console.log(data);
+        data.forEach(element => {
+            var li = document.createElement("li");
+            var div = document.createElement("div");
+            var span = document.createElement("span");
+            var username = document.createElement("a");
+            var email = document.createElement("p");
+            var role = document.createElement("p");
+            var del = document.createElement("button");
+
+            username.textContent = "Username: " + element.username;
+            email.textContent = "Email: " + element.email;
+            role.textContent = "Ruolo: " + element.role; 
+
+            del.type = "button";
+            del.onclick = function(){fetch(url + 'users/'+element.email, {
+                method: "DELETE",
+                headers: {"x-access-token": loggedUser.token, 'Content-Type': 'application/json'},
+            });};
+            del.textContent = "Elimina Account";
+
+            div.appendChild(del);
+            span.appendChild(username);
+            span.appendChild(email);
+            span.appendChild(role);
+            span.appendChild(div);
+            li.appendChild(span);
+            ul.appendChild(li);
+        });
+    });
+    us.appendChild(h2);
+    us.appendChild(ul);
 }
 
 function sendRoute(){
