@@ -94,7 +94,7 @@ function operator(){
                     method: "POST",
                     headers: {"x-access-token": loggedUser.token, 'Content-Type': 'application/json'},
                     body: JSON.stringify({status: "Approved"})
-                });}
+                }).then(()=>{window.Location.reload(true);});}
                 approve.textContent = "Approva";
 
                 decline.type = "button";
@@ -102,7 +102,7 @@ function operator(){
                     method: "POST",
                     headers: {"x-access-token": loggedUser.token, 'Content-Type': 'application/json'},
                     body: JSON.stringify({status: "Declined"})
-                });}
+                }).then(()=>{window.Location.reload(true);});}
                 decline.textContent = "Declina";
 
                 user.textContent = "User: " + element.user;
@@ -164,10 +164,9 @@ function admin(){
         method: 'POST',
         headers: { "x-access-token": loggedUser.token, 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: name, address: address, city: city, CAP: CAP })
+    }).then(()=>{
+        window.Location.reload(true);
     });
-
-
-
 }
 
 function sendRoute(){
@@ -179,5 +178,7 @@ function sendRoute(){
         method: 'POST',
         headers: { "x-access-token": loggedUser.token, 'Content-Type': 'application/json' },
         body: JSON.stringify({ user: loggedUser.user, stationA: stationA, stationB: stationB, dateOfDeparture: dateOfDeparture })
-    })
+    }).then(()=>{
+        window.Location.reload(true);
+    });
 }
