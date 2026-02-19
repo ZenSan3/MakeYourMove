@@ -36,7 +36,7 @@ router.get('/:username', async (req, res)=>{
  */
 router.post('', async (req, res)=>{
     console.log(req.body);
-    const pUser = User.findOne({username:req.body.username, email:req.body.username});
+    const pUser = await User.findOne({username:req.body.username, email:req.body.email});
     if(pUser){
         res.status(403).json({success:false, message:"User already exists"});
     }else{
